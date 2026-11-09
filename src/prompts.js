@@ -10,7 +10,7 @@ function context(settings, conversation) {
   return (
     `Vendedor: ${settings.sellerName || "(não informado)"}\n` +
     `Empresa: ${settings.businessName || "(não informado)"}\n` +
-    `Contato: ${conversation.chatName}\n` +
+    `Contato: ${(conversation.contactName ?? conversation.chatName) || "(não informado)"}\n` +
     `Data/hora atual: ${new Date().toLocaleString("pt-BR")}\n\n` +
     `SCRIPT DE VENDAS:\n${settings.salesScript}\n\n` +
     `CONVERSA (mais antiga primeiro):\n${transcript(conversation)}`

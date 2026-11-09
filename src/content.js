@@ -27,6 +27,10 @@
     return span?.textContent?.trim() || null;
   }
 
+  function getContactName(chatName) {
+    return chatName.replace(/^(?:FT|CL)\s*[-–—]\s*/i, "").replace(/\s*\|\s*\+?[\d\s()-]+$/, "").trim();
+  }
+
   // Encontra os "balões" de mensagem. O WhatsApp já usou várias estruturas,
   // então tentamos da mais específica para a mais genérica.
   function findBubbles() {
@@ -123,7 +127,7 @@
       console.warn("[Zap Copilot] nenhuma mensagem lida:", domReport());
       throw new Error(`Não encontrei mensagens nesta conversa. (${domReport()})`);
     }
-    return { chatName, messages };
+    return { chatName, contactName: getContactName(chatName), messages };
   }
 
   function insertText(text) {
@@ -727,8 +731,9 @@
   };
 
   function firstName(chatName) {
-    if (/^[+\d\s()-]+$/.test(chatName)) return "";
-    return chatName.split(/\s+/)[0];
+    const name = getContactName(chatName);
+    if (/^[+\d\s()-]+$/.test(name)) return "";
+    return name.split(/\s+/)[0];
   }
 
   async function cadenceText(name, index) {
